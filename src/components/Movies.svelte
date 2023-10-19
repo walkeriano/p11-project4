@@ -1,0 +1,287 @@
+<script>
+  import { onMount } from "svelte";
+  import play from "../img/play-01.svg";
+  import time from "../img/time-01.svg";
+
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwYTQ4YTNhOTY1MWQ3MjI3YzA1NWUzYzgxMTRkMGYxZiIsInN1YiI6IjY1MmU3ZTI3MDI0ZWM4MDBhZWNkNjg5YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wcxAWg3WYbvS9yD0D_aCCiWel6vH6ZysgaxhhdYIpM4",
+    },
+  };
+
+  const link =
+    "https://api.themoviedb.org/3/movie/popular?api_key=0a48a3a9651d7227c055e3c8114d0f1f";
+
+  let carteleras = [];
+  let isLoading = true;
+
+  onMount(async () => {
+    try {
+      const response = await fetch(link, options);
+      const data = await response.json();
+      carteleras = data.results;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      isLoading = false;
+    }
+  });
+</script>
+
+<section class="sec-movies" >
+  {#if isLoading}
+    <p>Cargando...</p>
+  {:else}
+    <section class="categoria">
+      <p>Más populares</p>
+      <div class="cartelera-cont">
+        {#each carteleras as cartelera}
+          <div class="items">
+            <img
+              src={`https://image.tmdb.org/t/p/original/${cartelera.poster_path}`}
+              alt="Cover"
+            />
+            <section class="detalles-items">
+              <div class="img-detail-grad">
+                <img
+                  src={`https://image.tmdb.org/t/p/original/${cartelera.poster_path}`}
+                  alt="Cover-detail"
+                  class="img-detail"
+                />
+                <div class="grad-img" />
+              </div>
+              <div class="cont-info">
+                <div class="votos-space">
+                  <p>{cartelera.vote_average}</p>
+                  <p>{cartelera.vote_count}</p>
+                </div>
+                <div class="cont-btns">
+                  <button class="play-btn">
+                    <img src={play} class="play" alt="i-play" />
+                    VER AHORA
+                  </button>
+                  <button class="time-btn">
+                    <img src={time} class="time" alt="i-play" />
+                  </button>
+                </div>
+                <h2 class="title-cartelera">{cartelera.title}</h2>
+                <p class="fecha">{cartelera.release_date}</p>
+                <p class="descrip">{cartelera.overview}</p>
+              </div>
+            </section>
+          </div>
+        {/each}
+      </div>
+      <span />
+    </section>
+  {/if}
+</section>
+
+<style>
+  .sec-movies {
+    width: 100%;
+    height: 1500px;
+    background-color: #00103d;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .categoria {
+    width: 100%;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-top: 50px;
+    position: relative;
+  }
+
+  .categoria p {
+    font-size: 1.2rem;
+    color: white;
+    letter-spacing: 0.5px;
+    margin-left: 30px;
+    position: relative;
+  }
+
+  .cartelera-cont {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .cartelera-cont::-webkit-scrollbar{
+    background-color:#00217547;
+    height: 8px;
+  }
+
+  .cartelera-cont::-webkit-scrollbar-thumb{
+    background-color:#0077ff;
+    border-radius: 10px;
+  }
+
+  .categoria span {
+    width: 150px;
+    height: 350px;
+    background: linear-gradient(to left, #040031, #04003100);
+    position: absolute;
+    right: 0px;
+    top: 50px;
+  }
+
+  .items {
+    min-width: 200px;
+    height: 280px;
+    margin-left: 30px;
+  }
+
+  .detalles-items {
+    display: none;
+  }
+
+  .items:hover {
+    & .detalles-items {
+      display: inline-block;
+      width: 300px;
+      background-color: #040031;
+      border: 1px solid #001172;
+      position: absolute;
+      top: 50px;
+      z-index: 900;
+      padding-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      box-shadow: 0px 2px 54px 10px rgba(0, 0, 0, 0.75);
+      border-radius: 10px;
+    }
+    & .img-detail-grad {
+      width: 100%;
+      height: 150px;
+      position: relative;
+    }
+    & .img-detail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    & .grad-img {
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(to top, #040031, #04003100);
+      position: absolute;
+      bottom: 0px;
+    }
+    & .cont-info {
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    & .cont-info p {
+      margin-left: 0px;
+    }
+
+    & .votos-space {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+    }
+    & .votos-space p:first-child {
+      margin-left: 0px;
+      font-size: 1.1rem;
+      border: 1px solid white;
+      padding: 10px 10px;
+      border-radius: 5px;
+      margin-right: 15px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    & .votos-space p:last-child {
+      margin-left: 0px;
+      font-size: 0.9rem;
+    }
+    & .cont-btns {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 15px;
+    }
+    & .play-btn {
+      border: none;
+      height: 50px;
+      width: 160px;
+      border-radius: 5px;
+      background-color: #00ff9e;
+      color: black;
+      font-weight: bold;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    & .play-btn .play {
+      width: 30px;
+      height: 30px;
+    }
+    & .time-btn {
+      width: 50px;
+      height: 50px;
+      background-color: rgba(0, 0, 0, 0.623);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    & .time-btn .time {
+      width: 25px;
+      height: 25px;
+    }
+    & .title-cartelera {
+      color: white;
+      margin-top: 20px;
+      text-align: left;
+      width: 100%;
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    & .cont-info .fecha {
+      width: 100%;
+      font-size: 0.8rem;
+      margin-bottom: 20px;
+    }
+    & .cont-info .descrip {
+      font-size: 0.9rem;
+      line-height: 1.1;
+      letter-spacing: 1px;
+    }
+  }
+
+  .items img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
