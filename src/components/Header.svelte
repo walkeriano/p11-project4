@@ -42,12 +42,11 @@
 
   .space-nav{
     width: 70%;
-    border: 1px solid blue;
     display: flex;
     align-items: center;
     justify-content:flex-start;
     gap: 30px;
-    padding-left: 20px;
+    padding-left: 30px;
   }
 
   img {
@@ -81,11 +80,10 @@
 
   .space-buttons{
     width: 30%;
-    border: 1px solid blue;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding-right: 30px;
+    padding-right: 40px;
     gap: 12px;
   }
 
@@ -99,6 +97,10 @@
     cursor: pointer;
   }
 
+  .btn-registro:hover{
+    background-color:white;
+  }
+
   .btn-inicio{
     padding: 10px 15px;
     border: 2px solid white;
@@ -109,6 +111,10 @@
     cursor: pointer;
   }
 
+  .btn-inicio:hover{
+    background-color:white;
+    color: black;
+  }
 
 
   

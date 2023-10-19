@@ -1,5 +1,7 @@
 <script>
   import { onMount } from "svelte";
+  import replay from "../img/ver-01.svg";
+  import arrow from "../img/icon-flecha-01.svg";
 
   const options = {
     method: "GET",
@@ -41,12 +43,16 @@
   //     orden += 1;
   //   }
   // };
-
 </script>
 
 <section class="bg-slider">
+  <button class="bt-next">
+    <img src={arrow} alt="arrow" />
+  </button>
   {#if isLoading}
-    <p>Cargando...</p>
+    <div class="cont-load">
+      <span class="span-loading" />
+    </div>
   {:else}
     <section class="cont-img-slider">
       {#each estrenos as estreno}
@@ -56,11 +62,9 @@
             <p>Alejandro Rojas y Juan Sebastian Vasquez</p>
             <div class="fun-slider">
               <button class="btn-ver">VER AHORA</button>
-              <div class="circles-slider">
-                <span />
-                <span />
-              </div>
-              <button class="btn-replay" />
+              <button class="btn-replay">
+                <img src={replay} alt="i-replay" />
+              </button>
             </div>
           </div>
           <span class="grad-slid" />
@@ -73,16 +77,77 @@
       {/each}
     </section>
   {/if}
+  <button class="bt-back">
+    <img src={arrow} alt="arrow" />
+  </button>
 </section>
 
 <style>
+  .cont-load {
+    background-color: white;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .span-loading {
+    width: 35px;
+    height: 35px;
+    border: 7px dotted #0042da;
+    border-radius: 50%;
+    animation: load 2.5s infinite ease-out;
+    background-color: white;
+  }
+
+  @keyframes load {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(90deg);
+    }
+    100% {
+      transform: rotate(180deg);
+    }
+  }
   .bg-slider {
     width: 100%;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: green;
+    background-color: #00103d;
+  }
+
+  .bt-next {
+    position: absolute;
+    right: 40px;
+    z-index: 1000;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .bt-next img {
+    width: 35px;
+    transform: rotate(-90deg);
+  }
+
+  .bt-back {
+    position: absolute;
+    left: 40px;
+    z-index: 1000;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .bt-back img {
+    width: 35px;
+    transform: rotate(90deg);
   }
 
   .cont-img-slider {
@@ -159,27 +224,27 @@
     font-size: 1rem;
     letter-spacing: 0.5px;
     font-weight: bold;
+    cursor: pointer;
   }
 
-  .circles-slider {
-    width: 30%;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-  }
-
-  .circles-slider span {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: white;
+  .btn-ver:hover {
+    background-color: #00ff9e;
   }
 
   .btn-replay {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background-color: #040031;
     border: none;
+    cursor: pointer;
+  }
+
+  .btn-replay:hover {
+    background-color: #001149;
+  }
+
+  .btn-replay img {
+    width: 20px;
   }
 </style>
