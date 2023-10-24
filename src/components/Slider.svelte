@@ -30,23 +30,29 @@
     }
   });
 
-  // let orden = 0;
+  
+  let container;
+  let scrollPosition = 0;
+  const getWindowWidth = () => window.innerWidth;
 
-  // const back = () => {
-  //   if (orden > 0) {
-  //     orden -= 1;
-  //   }
-  // };
+  const next = () => {
+    if (container) {
+      scrollPosition += getWindowWidth();
+      container.scroll({ left: scrollPosition, behavior: "smooth" });
+    }
+  };
 
-  // const next = () => {
-  //   if (orden < estrenos.length - 1) {
-  //     orden += 1;
-  //   }
-  // };
+  const back = () => {
+    if (container) {
+      scrollPosition -= getWindowWidth();
+      container.scroll({ left: scrollPosition, behavior: "smooth" });
+    }
+  };
+
 </script>
 
 <section class="bg-slider">
-  <button class="bt-next">
+  <button on:click={next} class="bt-next">
     <img src={arrow} alt="arrow" />
   </button>
   {#if isLoading}
@@ -54,7 +60,7 @@
       <span class="span-loading" />
     </div>
   {:else}
-    <section class="cont-img-slider">
+    <section class="cont-img-slider" bind:this={container}>
       {#each estrenos as estreno}
         <div class="sec-imgs">
           <div class="info-img">
@@ -77,7 +83,7 @@
       {/each}
     </section>
   {/if}
-  <button class="bt-back">
+  <button on:click={back} class="bt-back">
     <img src={arrow} alt="arrow" />
   </button>
 </section>
@@ -96,9 +102,9 @@
   .span-loading {
     width: 35px;
     height: 35px;
-    border: 7px dotted #0042da;
+    border: 7px dotted #00103d;
     border-radius: 50%;
-    animation: load 2.5s infinite ease-out;
+    animation: load 5s infinite ease-out;
     background-color: white;
   }
 
@@ -106,13 +112,11 @@
     0% {
       transform: rotate(0deg);
     }
-    50% {
-      transform: rotate(90deg);
-    }
     100% {
-      transform: rotate(180deg);
+      transform: rotate(360deg);
     }
   }
+  
   .bg-slider {
     width: 100%;
     height: 100vh;
@@ -156,12 +160,11 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
   }
 
   .sec-imgs {
-    width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -178,7 +181,7 @@
   .info-img {
     width: 95%;
     position: absolute;
-    bottom: 0;
+    bottom: 20px;
     color: white;
     z-index: 1900;
   }
@@ -246,5 +249,10 @@
 
   .btn-replay img {
     width: 20px;
+  }
+
+  .bt-next:hover, .bt-back:hover{
+    transform: scale(1.3);
+    transition: 0.3s linear;
   }
 </style>

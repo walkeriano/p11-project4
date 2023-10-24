@@ -9,7 +9,3 @@
   <Slider/>
   <Movies/>
 </main>
-
-<style>
-  
-</style>

@@ -35,9 +35,9 @@
     justify-content: space-around;
     padding-top: 30px;
     background: linear-gradient(to bottom, #00103d, #00103d00);
-    position: absolute;
+    position: fixed;
     top: 0;
-    z-index: 100;
+    z-index: 5000;
   }
 
   .space-nav{

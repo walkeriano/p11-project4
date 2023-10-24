@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import play from "../img/play-01.svg";
   import time from "../img/time-01.svg";
+  import arrow from "../img/icon-flecha-01.svg";
 
   const options = {
     method: "GET",
@@ -29,15 +30,38 @@
       isLoading = false;
     }
   });
+
+  let containerMovies;
+  let scrollPosition = 0;
+
+  const next = () => {
+    if (containerMovies) {
+      scrollPosition += 200;
+      containerMovies.scroll({ left: scrollPosition, behavior: "smooth" });
+    }
+  };
+
+  const back = () => {
+    if (containerMovies) {
+      scrollPosition -= 200;
+      containerMovies.scroll({ left: scrollPosition, behavior: "smooth" });
+    }
+  };
 </script>
 
-<section class="sec-movies" >
+<section class="sec-movies">
+  <button on:click={next} class="bt-next">
+    <img src={arrow} alt="arrow" />
+  </button>
   {#if isLoading}
-    <p>Cargando...</p>
+    <div class="cont-load">
+      <span class="span-loading" />
+    </div>
   {:else}
     <section class="categoria">
       <p>Más populares</p>
-      <div class="cartelera-cont">
+      <span class="sombra-om" />
+      <div class="cartelera-cont" bind:this={containerMovies}>
         {#each carteleras as cartelera}
           <div class="items">
             <img
@@ -75,9 +99,12 @@
           </div>
         {/each}
       </div>
-      <span />
+      <span class="sombra-two" />
     </section>
   {/if}
+  <button on:click={back} class="bt-back">
+    <img src={arrow} alt="arrow" />
+  </button>
 </section>
 
 <style>
@@ -98,15 +125,15 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    padding-top: 50px;
+    padding-top: 100px;
     position: relative;
   }
 
   .categoria p {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: white;
     letter-spacing: 0.5px;
-    margin-left: 30px;
+    margin-left: 80px;
     position: relative;
   }
 
@@ -116,27 +143,25 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
   }
 
-  .cartelera-cont::-webkit-scrollbar{
-    background-color:#00217547;
-    height: 8px;
-  }
-
-  .cartelera-cont::-webkit-scrollbar-thumb{
-    background-color:#0077ff;
-    border-radius: 10px;
-  }
-
-  .categoria span {
-    width: 150px;
+  .categoria .sombra-two {
+    width: 200px;
     height: 350px;
-    background: linear-gradient(to left, #040031, #04003100);
+    background: linear-gradient(to left, #00103d, #04003100);
     position: absolute;
     right: 0px;
-    top: 50px;
+    top: 100px;
+  }
+  .categoria .sombra-om {
+    width: 100px;
+    height: 300px;
+    background: linear-gradient(to right, #00103d, #04003100);
+    position: absolute;
+    left: 0px;
+    top: 150px;
   }
 
   .items {
@@ -145,15 +170,27 @@
     margin-left: 30px;
   }
 
+  .items:first-child {
+    margin-left: 80px;
+  }
+
+  .items img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
   .detalles-items {
     display: none;
   }
 
   .items:hover {
+    transition: 5s ease-out;
     & .detalles-items {
       display: inline-block;
       width: 300px;
-      background-color: #040031;
+      background-color: #00103d;
       border: 1px solid #001172;
       position: absolute;
       top: 50px;
@@ -163,7 +200,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      box-shadow: 0px 2px 54px 10px rgba(0, 0, 0, 0.75);
+      box-shadow: 0px 2px 54px 10px #00071d;
       border-radius: 10px;
     }
     & .img-detail-grad {
@@ -180,7 +217,7 @@
     & .grad-img {
       width: 100%;
       height: 70px;
-      background: linear-gradient(to top, #040031, #04003100);
+      background: linear-gradient(to top, #00103d, #00103d00);
       position: absolute;
       bottom: 0px;
     }
@@ -279,9 +316,63 @@
     }
   }
 
-  .items img {
+  .bt-next {
+    position: absolute;
+    right: 20px;
+    bottom: -310px;
+    z-index: 1000;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .bt-next img {
+    width: 35px;
+    transform: rotate(-90deg);
+  }
+
+  .bt-back {
+    position: absolute;
+    left: 20px;
+    bottom: -310px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .bt-back img {
+    width: 35px;
+    transform: rotate(90deg);
+  }
+
+  .bt-next:hover,
+  .bt-back:hover {
+    transform: scale(1.3);
+    transition: 0.3s linear;
+  }
+
+  .cont-load {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .span-loading {
+    width: 35px;
+    height: 35px;
+    border: 7px dotted white;
+    border-radius: 50%;
+    animation: load 5s infinite ease-out;
+  }
+
+  @keyframes load {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 </style>
