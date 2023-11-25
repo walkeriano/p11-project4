@@ -110,7 +110,6 @@
 <style>
   .sec-movies {
     width: 100%;
-    height: 1500px;
     background-color: #00103d;
     display: flex;
     flex-direction: column;
@@ -188,12 +187,12 @@
   .items:hover {
     transition: 5s ease-out;
     & .detalles-items {
-      display: inline-block;
+      display: block;
       width: 300px;
       background-color: #00103d;
       border: 1px solid #001172;
       position: absolute;
-      top: 50px;
+      top: 100px;
       z-index: 900;
       padding-bottom: 30px;
       display: flex;
